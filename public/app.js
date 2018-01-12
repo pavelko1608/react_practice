@@ -22,32 +22,55 @@ function Header(props) {
     title: React.PropTypes.string.isRequired
   };
 }
-function Counter(props) {
-  return React.createElement(
-    "div",
-    { className: "counter" },
-    React.createElement(
-      "button",
-      { className: "counter-action decrement" },
-      " - "
-    ),
-    React.createElement(
+
+const Counter = React.createClass({
+  displayName: "Counter",
+
+  propTypes: {
+    initialScore: React.PropTypes.number.isRequired
+  },
+  getInitialState: function () {
+    return {
+      score: this.props.initialScore
+    };
+  },
+
+  incrementScore: function () {
+    this.setState({
+      score: this.state.score + 1
+    });
+  },
+
+  decrementScore: function () {
+    this.setState({
+      score: this.state.score - 1
+    });
+  },
+
+  render() {
+    return React.createElement(
       "div",
-      { className: "counter-score" },
-      " ",
-      props.score,
-      " "
-    ),
-    React.createElement(
-      "button",
-      { className: "counter-action increment" },
-      " + "
-    )
-  );
-  Counter.propTypes = {
-    score: React.PropTypes.number.isRequired
-  };
-}
+      { className: "counter" },
+      React.createElement(
+        "button",
+        { className: "counter-action decrement", onClick: this.decrementScore },
+        " - "
+      ),
+      React.createElement(
+        "div",
+        { className: "counter-score" },
+        this.state.score,
+        " "
+      ),
+      React.createElement(
+        "button",
+        { className: "counter-action increment", onClick: this.incrementScore },
+        " + "
+      )
+    );
+  }
+});
+
 function Player(props) {
   return React.createElement(
     "div",
@@ -60,7 +83,7 @@ function Player(props) {
     React.createElement(
       "div",
       { className: "player-scrore" },
-      React.createElement(Counter, { score: props.score })
+      React.createElement(Counter, { initialScore: props.score })
     )
   );
   Player.propTypes = {
